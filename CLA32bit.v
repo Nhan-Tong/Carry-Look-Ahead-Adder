@@ -15,10 +15,9 @@ wire [data :0] carry_tmp; // carry temporary
 
 genvar j, i;
 generate
- //carry_temporary = 0
  assign carry_tmp[0] = carry_in;
  
- //carry generator
+ //calculate carry
  for(j = 0; j < data; j = j + 1) begin: carry_generator
 	 assign G[j] = in1[j] & in2[j];
 	 assign P[j] = in1[j] | in2[j];
@@ -26,7 +25,7 @@ generate
 	end
  
  assign carry_out = carry_tmp[data];
- 
+ //calculate sum
  for(i = 0; i < data; i = i+1) begin: sum_without_carry
 		assign sum[i] = in1[i] ^ in2[i] ^ carry_tmp[i];
 	end 
