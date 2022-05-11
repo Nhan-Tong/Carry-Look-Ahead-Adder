@@ -18,6 +18,9 @@ Define:
 - carry propagate: P = (A xor B)
 
 This is used to predict the carry out of the calculation
+
 Sum:
+
 S = A xor B xor Cin = P xor Cin
+
 Cout = G + (P and Cin)
