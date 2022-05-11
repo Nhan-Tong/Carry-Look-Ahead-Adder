@@ -1,6 +1,5 @@
-`timescale 1ns/1ps
 module CLA32bit(in1, in2, carry_in, sum, carry_out);
-// input data length 
+// initial parameter
 parameter data = 32;
 // inputs
 input [data -1 :0] in1;
@@ -16,7 +15,7 @@ wire [data :0] carry_tmp; // carry temporary
 
 genvar j, i;
 generate
- //carry_tmp = 0
+ //carry_temporary = 0
  assign carry_tmp[0] = carry_in;
  
  //carry generator
@@ -26,21 +25,17 @@ generate
 	 assign carry_tmp[j+1] = G[j] | P[j] & carry_tmp[j];
 	end
  
- //carry out 
  assign carry_out = carry_tmp[data];
  
-
- //Sum 
  for(i = 0; i < data; i = i+1) begin: sum_without_carry
 		assign sum[i] = in1[i] ^ in2[i] ^ carry_tmp[i];
 	end 
 	
 endgenerate
-
 endmodule
 
 
-
+// test bench of CLA
 module testbench();
 
 parameter data = 16;
@@ -48,24 +43,14 @@ parameter data = 16;
  reg carry_in; 
  reg [data-1:0] in1; 
  reg [data-1:0] in2; 
-//
+
  wire carry_out; 
  wire [data-1:0] sum; 
  
-CLA32bit cla1(/*AUTOINST*/
-        //  Outputs
-         .sum (sum[data-1:0]),
-         .carry_out (carry_out),
-        // Inputs
-         .in1 (in1[data-1:0]),
-         .in2 (in2[data-1:0]),
-         .carry_in (carry_in));
-
+CLA32bit test(.sum (sum[data-1:0]),.carry_out (carry_out),.in1 (in1[data-1:0]),.in2 (in2[data-1:0]),.carry_in (carry_in));
  initial begin
   in1 = -32'd23;
   in2 = 32'd10;
   carry_in = 1'b0;
   end 
- 
-
 endmodule
